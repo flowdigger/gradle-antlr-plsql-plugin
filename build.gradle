@@ -543,7 +543,7 @@ tasks.register('allSecurityChecks') {
 def sqlInputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application"
 def astOutputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application.output"
 
-tasks.register('realast', org.flowdigger.gradle.antlr.XmlAstGradleTask) { it ->
+tasks.register('realast', name.jurgenei.gradle.antlr.XmlAstGradleTask) { it ->
     configureXmlAstTask(it, sqlInputDir, astOutputDir,
             'Parses benchmark SQL samples parallel.')
     it.executionModel.set('VIRTUAL_THREADS')
