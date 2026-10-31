@@ -344,7 +344,14 @@ tasks.register('coverage') {
     description = 'Runs tests, generates JaCoCo report, and verifies minimum coverage threshold.'
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
-"))
+
+def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
+    t.group = 'verification'
+    t.description = taskDescription
+    t.compression = true
+    t.dependsOn tasks.named('compileAntlrSources')
+    t.sourceDirectory.set(layout.projectDirectory.dir(sourcePath))
+    t.destinationDirectory.set(layout.buildDirectory.dir("xmlast-samples/${outputDirName}"))
     t.parserClassName.set('name.jurgenei.parsers.PlSqlParser')
     t.lexerClassName.set('name.jurgenei.parsers.PlSqlLexer')
     t.startRule.set('script')
