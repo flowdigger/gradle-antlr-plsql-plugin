@@ -451,22 +451,14 @@ tasks.named('check') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 def configureXmlAstTask = { org.flowdigger.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
-=======
-def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
->>>>>>> cfbeb4e (fix: restore build script after publishing migration)
     t.group = 'verification'
     t.description = taskDescription
     t.compression = true
     t.dependsOn tasks.named('compileAntlrSources')
     t.sourceDirectory.set(layout.projectDirectory.dir(sourcePath))
     t.destinationDirectory.set(layout.buildDirectory.dir("xmlast-samples/${outputDirName}"))
-<<<<<<< HEAD
     t.parserClassName.set('org.flowdigger.parsers.PlSqlParser')
     t.lexerClassName.set('org.flowdigger.parsers.PlSqlLexer')
-=======
-    t.parserClassName.set('name.jurgenei.parsers.PlSqlParser')
-    t.lexerClassName.set('name.jurgenei.parsers.PlSqlLexer')
->>>>>>> cfbeb4e (fix: restore build script after publishing migration)
     t.startRule.set('script')
     t.includes.set(['**/*.sql'])
     t.targetExtension.set('.xml')
