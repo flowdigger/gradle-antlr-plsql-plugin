@@ -100,8 +100,8 @@ publishing {
 
                 developers {
                     developer {
-                        id = 'flowdigger'
-                        name = 'Flowdigger'
+                        id = 'jurgenei'
+                        name = 'Jurgen Hildebrand'
                     }
                 }
 
