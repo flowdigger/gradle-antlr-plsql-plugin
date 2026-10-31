@@ -1,6 +1,6 @@
-package name.jurgenei.gradle.antlr;
+package org.flowdigger.gradle.antlr;
 
-import name.jurgenei.gradle.antlr.XmlAstGradleTask;
+import org.flowdigger.gradle.antlr.XmlAstGradleTask;
 import org.gradle.api.model.ObjectFactory;
 
 import javax.inject.Inject;
@@ -24,8 +24,8 @@ public abstract class XmlAstPlsqlGradleTask extends XmlAstGradleTask {
         super(objects);
         LanguageTaskDefaults.of(
                 "plsql",
-                "name.jurgenei.parsers.PlSqlParser",
-                "name.jurgenei.parsers.PlSqlLexer",
+                "org.flowdigger.parsers.PlSqlParser",
+                "org.flowdigger.parsers.PlSqlLexer",
                 "script",
                 List.of("**/*.sql", "**/*.pks", "**/*.pkb", "**/*.pls"))
             .applyTo(this);

@@ -1,4 +1,4 @@
-package name.jurgenei.gradle.antlr;
+package org.flowdigger.gradle.antlr;
 
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
@@ -23,7 +23,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'name.jurgenei.gradle.antlr.plsql'
+                    id 'org.flowdigger.gradle.antlr.plsql'
                 }
                 """);
 
@@ -39,7 +39,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'name.jurgenei.gradle.antlr.plsql'
+                    id 'org.flowdigger.gradle.antlr.plsql'
                 }
 
                 tasks.register('printPlsqlDefaults') {
@@ -59,8 +59,8 @@ public class XmlAstPlsqlPluginFunctionalTest {
         final String output = result.getOutput();
 
         Assert.assertTrue(output.contains("grammar=plsql"));
-        Assert.assertTrue(output.contains("parserClassName=name.jurgenei.parsers.PlSqlParser"));
-        Assert.assertTrue(output.contains("lexerClassName=name.jurgenei.parsers.PlSqlLexer"));
+        Assert.assertTrue(output.contains("parserClassName=org.flowdigger.parsers.PlSqlParser"));
+        Assert.assertTrue(output.contains("lexerClassName=org.flowdigger.parsers.PlSqlLexer"));
         Assert.assertTrue(output.contains("startRule=script"));
         Assert.assertTrue(output.contains("targetExtension=.xml"));
         Assert.assertTrue(output.contains("outputFormat=compact"));
@@ -73,10 +73,10 @@ public class XmlAstPlsqlPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'name.jurgenei.gradle.antlr.plsql'
+                    id 'org.flowdigger.gradle.antlr.plsql'
                 }
 
-                tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
+                tasks.named('plsqlXmlAst', org.flowdigger.gradle.antlr.XmlAstPlsqlGradleTask) {
                     targetExtension.set('.xir')
                     outputFormat.set('beautified')
                 }

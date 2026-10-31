@@ -1,4 +1,4 @@
-// Generated from /Users/cs79en/Developer/GitHub/gradle/antlr-grammars-plsql/src/main/antlr/name/jurgenei/parsers/PlSqlLexer.g4 by ANTLR 4.13.2
+// Generated from /Users/cs79en/Developer/GitHub/gradle/antlr-grammars-plsql/src/main/antlr/org/flowdigger/parsers/PlSqlLexer.g4 by ANTLR 4.13.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
