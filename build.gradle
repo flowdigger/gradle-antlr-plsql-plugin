@@ -1,3 +1,5 @@
+import org.gradle.api.GradleException
+import java.security.MessageDigest
 /*
  * PL/SQL Language parser plugin.
  * J.S. Hildebrand (c) 2026
@@ -9,7 +11,6 @@ plugins {
     id 'java'
     id 'antlr'
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '1.3.1'
     id 'jacoco'
     id 'name.jurgenei.gradle.antlr' version '0.1.9'
     id 'maven-publish'
@@ -65,6 +66,20 @@ dependencies {
 }
 
 publishing {
+    repositories {
+        mavenLocal()
+        maven {
+            name = 'sonatype'
+            def releasesRepoUrl = 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = uri(version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl)
+            credentials {
+                username = providers.gradleProperty('mavenCentralUsername').orNull
+                password = providers.gradleProperty('mavenCentralPassword').orNull
+            }
+        }
+    }
+
     publications {
         mavenJava(MavenPublication) {
             from components.java
@@ -329,35 +344,7 @@ tasks.register('coverage') {
     description = 'Runs tests, generates JaCoCo report, and verifies minimum coverage threshold.'
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
-
-tasks.matching { it.name == 'publishPlugins' }.configureEach {
-    notCompatibleWithConfigurationCache('publishPlugins uses Gradle Plugin Publish internals that are not configuration-cache serializable')
-}
-
-tasks.named('compileTestJava') {
-    dependsOn tasks.named('compileAntlrSources')
-    classpath += files("$buildDir/classes/java/antlr")
-}
-
-tasks.named('test') {
-    classpath += files("$buildDir/classes/java/antlr")
-}
-
-tasks.named('check') {
-    dependsOn tasks.named('verifyGrammarSources')
-}
-
-tasks.named('check') {
-    dependsOn tasks.named('jacocoTestCoverageVerification')
-}
-
-def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
-    t.group = 'verification'
-    t.description = taskDescription
-    t.compression = true
-    t.dependsOn tasks.named('compileAntlrSources')
-    t.sourceDirectory.set(layout.projectDirectory.dir(sourcePath))
-    t.destinationDirectory.set(layout.buildDirectory.dir("xmlast-samples/${outputDirName}"))
+"))
     t.parserClassName.set('name.jurgenei.parsers.PlSqlParser')
     t.lexerClassName.set('name.jurgenei.parsers.PlSqlLexer')
     t.startRule.set('script')
@@ -515,4 +502,63 @@ tasks.register('xml-ast-profile', XmlAstGradleTask) { XmlAstGradleTask it ->
                 enableDecisionProfiling.get(),
                 decisionProfileTopN.get())
     }
+}
+
+
+def centralArtifactId = (project.findProperty('mavenArtifactId') ?: project.name).toString()
+def centralGroupPath = project.group.toString().replace('.', '/')
+
+def stageCentralBundleRepo = tasks.register('stageCentralBundleRepo', Sync) {
+    dependsOn tasks.named('publishToMavenLocal')
+
+    def artifactBaseDir = file("${System.getProperty('user.home')}/.m2/repository/${centralGroupPath}/${centralArtifactId}")
+    def artifactVersionDir = file("${artifactBaseDir}/${project.version}")
+    from(artifactVersionDir)
+    into(layout.buildDirectory.dir("central-staging-repo/${centralGroupPath}/${centralArtifactId}/${project.version}"))
+
+    doFirst {
+        if (!artifactVersionDir.exists()) {
+            throw new GradleException("Expected local Maven artifact version directory not found: ${artifactVersionDir}")
+        }
+    }
+}
+
+def generateCentralBundleChecksums = tasks.register('generateCentralBundleChecksums') {
+    dependsOn stageCentralBundleRepo
+    notCompatibleWithConfigurationCache('Generates checksum files by scanning staged output directory at execution time.')
+
+    doLast {
+        def stagedVersionDir = layout.buildDirectory.dir("central-staging-repo/${centralGroupPath}/${centralArtifactId}/${project.version}").get().asFile
+        if (!stagedVersionDir.exists()) {
+            throw new GradleException("Expected staged version directory not found: ${stagedVersionDir}")
+        }
+
+        def checksum = { File input, String algorithm ->
+            MessageDigest digest = MessageDigest.getInstance(algorithm)
+            input.withInputStream { stream ->
+                byte[] buffer = new byte[8192]
+                int read
+                while ((read = stream.read(buffer)) >= 0) {
+                    digest.update(buffer, 0, read)
+                }
+            }
+            digest.digest().collect { String.format('%02x', it & 0xff) }.join('')
+        }
+
+        stagedVersionDir.eachFileRecurse { file ->
+            if (file.isFile() && !file.name.endsWith('.md5') && !file.name.endsWith('.sha1')) {
+                file.parentFile.toPath().resolve(file.name + '.md5').toFile().text = checksum(file, 'MD5') + System.lineSeparator()
+                file.parentFile.toPath().resolve(file.name + '.sha1').toFile().text = checksum(file, 'SHA-1') + System.lineSeparator()
+            }
+        }
+    }
+}
+
+tasks.register('packageCentralBundle', Zip) {
+    dependsOn generateCentralBundleChecksums
+    archiveBaseName = project.name
+    archiveVersion = project.version.toString()
+    archiveClassifier = 'central-bundle'
+    destinationDirectory = layout.buildDirectory.dir('central-bundle').get().asFile
+    from layout.buildDirectory.dir('central-staging-repo')
 }
