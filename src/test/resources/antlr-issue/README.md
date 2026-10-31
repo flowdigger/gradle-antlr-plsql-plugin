@@ -77,4 +77,3 @@ The extraction was performed by `extract_issues.py` which:
 - All generated files preserve the original issue reference for traceability
 - The script uses SSL context to handle certificate verification
 - Current unresolved/failing cases are tracked under `../antlr-issue-unresolved` (for example issues 2142, 2345, 3043, 3817, 4837, 4838).
-

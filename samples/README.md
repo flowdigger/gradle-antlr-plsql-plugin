@@ -17,4 +17,3 @@ These files are designed as copy/paste templates for a grammar module where:
 - lexer class: `name.flowdigger.parsers.PlSqlLexer`
 - parser entry rule: `script`
 - sample directory: `src/test/resources/benchmark`
-
