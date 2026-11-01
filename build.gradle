@@ -2,7 +2,7 @@
  * PL/SQL Language parser plugin.
  * J.S. Hildebrand (c) 2026
  */
-import name.jurgenei.gradle.antlr.XmlAstGradleTask
+import org.flowdigger.gradle.antlr.XmlAstGradleTask
 import java.util.Locale
 
 plugins {
@@ -11,7 +11,7 @@ plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '1.3.1'
     id 'jacoco'
-    id 'name.jurgenei.gradle.antlr' version '0.1.9'
+    id 'org.flowdigger.gradle.antlr' version '0.1.9'
     id 'maven-publish'
     id 'signing'
     id 'org.owasp.dependencycheck' version '10.0.3'
@@ -19,7 +19,7 @@ plugins {
     id 'org.sonarqube' version '6.0.1.5171'
 }
 
-group = 'name.jurgenei.gradle'
+group = 'org.flowdigger.gradle'
 version = '0.1.8'
 
 ext {
@@ -32,8 +32,8 @@ gradlePlugin {
     vcsUrl = 'https://github.com/jurgenei/gradle-antlr-plsql-plugin'
     plugins {
         xmlAstPlsql {
-            id = 'name.jurgenei.gradle.antlr.plsql'
-            implementationClass = 'name.jurgenei.gradle.antlr.XmlAstPlsqlPlugin'
+            id = 'org.flowdigger.gradle.antlr.plsql'
+            implementationClass = 'org.flowdigger.gradle.antlr.XmlAstPlsqlPlugin'
             displayName = 'Gradle ANTLR PL/SQL Plugin'
             description = 'Preconfigured XML AST task support for PL/SQL grammar parsing.'
             tags.set(['antlr', 'xml', 'ast', 'plsql'])
@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'name.jurgenei.gradle:gradle-antlr-plugin:0.1.7'
+    implementation 'org.flowdigger.gradle:gradle-antlr-plugin:0.1.7'
     implementation 'org.antlr:antlr4-runtime:4.13.2'
 
     antlr 'org.antlr:antlr4:4.13.2'
@@ -161,7 +161,7 @@ sonar {
 
 def grammarDir = file('src/main/antlr/name/jurgenei/parsers')
 def antlrOutputDir = file("generated-src/antlr/main")
-def antlrPackage = 'name.jurgenei.parsers'
+def antlrPackage = 'org.flowdigger.parsers'
 
 tasks.register('generateLexerSources', JavaExec) {
     group = 'build'
@@ -351,15 +351,15 @@ tasks.named('check') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 
-def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
+def configureXmlAstTask = { org.flowdigger.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
     t.group = 'verification'
     t.description = taskDescription
     t.compression = true
     t.dependsOn tasks.named('compileAntlrSources')
     t.sourceDirectory.set(layout.projectDirectory.dir(sourcePath))
     t.destinationDirectory.set(layout.buildDirectory.dir("xmlast-samples/${outputDirName}"))
-    t.parserClassName.set('name.jurgenei.parsers.PlSqlParser')
-    t.lexerClassName.set('name.jurgenei.parsers.PlSqlLexer')
+    t.parserClassName.set('org.flowdigger.parsers.PlSqlParser')
+    t.lexerClassName.set('org.flowdigger.parsers.PlSqlLexer')
     t.startRule.set('script')
     t.includes.set(['**/*.sql'])
     t.targetExtension.set('.xml')
@@ -381,8 +381,8 @@ def configureXmlAstTask = { name.jurgenei.gradle.antlr.XmlAstGradleTask t, Strin
         t.logger.lifecycle("Completed XML AST conversion for ${outputDirName}")
     }
 }
-// name.jurgenei.gradle.antlr.XmlAstGradleTask
-tasks.named('xmlast', name.jurgenei.gradle.antlr.XmlAstGradleTask) {
+// org.flowdigger.gradle.antlr.XmlAstGradleTask
+tasks.named('xmlast', org.flowdigger.gradle.antlr.XmlAstGradleTask) {
     // Keep plugin default task name as a compatibility alias, but delegate work
     // to the explicit sample-set tasks below.
     dependsOn tasks.named('xml-ast-antlr-issue')
@@ -444,7 +444,7 @@ tasks.register('allSecurityChecks') {
 def sqlInputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application"
 def astOutputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application.output"
 
-tasks.register('realast', name.jurgenei.gradle.antlr.XmlAstGradleTask) { it ->
+tasks.register('realast', org.flowdigger.gradle.antlr.XmlAstGradleTask) { it ->
     configureXmlAstTask(it, sqlInputDir, astOutputDir,
             'Parses benchmark SQL samples parallel.')
     it.executionModel.set('VIRTUAL_THREADS')
@@ -481,8 +481,8 @@ tasks.register('xml-ast-profile', XmlAstGradleTask) { XmlAstGradleTask it ->
     dependsOn tasks.named('compileAntlrSources')
     sourceDirectory.set(file(profileSourceDir))
     destinationDirectory.set(file(profileOutputDir))
-    parserClassName.set('name.jurgenei.parsers.PlSqlParser')
-    lexerClassName.set('name.jurgenei.parsers.PlSqlLexer')
+    parserClassName.set('org.flowdigger.parsers.PlSqlParser')
+    lexerClassName.set('org.flowdigger.parsers.PlSqlLexer')
     startRule.set('script')
     includes.set(['**/*.sql'])
     targetExtension.set('.xml')
