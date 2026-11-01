@@ -19,7 +19,7 @@
 
 `gradle-antlr-plsql-plugin` provides preconfigured XML AST task support for PL/SQL parsing workflows.
 
-It builds on `name.flowdigger.gradle.antlr` and offers task defaults tailored for `PlSqlLexer`/`PlSqlParser` use cases.
+It builds on `org.flowdigger.gradle.antlr` and offers task defaults tailored for `PlSqlLexer`/`PlSqlParser` use cases.
 
 ## Position in XIR spine
 
@@ -42,7 +42,7 @@ Structured Knowledge -> XIR -> Observation -> Derivation -> Knowledge -> Applica
 
 ```groovy
 plugins {
-    id 'name.flowdigger.gradle.antlr.plsql'
+    id 'org.flowdigger.gradle.antlr.plsql'
 }
 ```
 
@@ -55,8 +55,8 @@ plugins {
 Default task conventions:
 
 - `grammar = plsql`
-- `parserClassName = name.flowdigger.parsers.PlSqlParser`
-- `lexerClassName = name.flowdigger.parsers.PlSqlLexer`
+- `parserClassName = org.flowdigger.parsers.PlSqlParser`
+- `lexerClassName = org.flowdigger.parsers.PlSqlLexer`
 - `startRule = script`
 - `includes = ['**/*.sql', '**/*.pks', '**/*.pkb', '**/*.pls']`
 
@@ -65,10 +65,10 @@ Default task conventions:
 ```groovy
 plugins {
     id 'java'
-    id 'name.flowdigger.gradle.antlr.plsql' 
+    id 'org.flowdigger.gradle.antlr.plsql'
 }
 
-tasks.named('plsqlXmlAst', name.flowdigger.grammars.plsql.XmlAstPlsqlGradleTask) {
+tasks.named('plsqlXmlAst', org.flowdigger.grammars.plsql.XmlAstPlsqlGradleTask) {
     sourceDirectory.set(layout.projectDirectory.dir('src/test/resources/plsql'))
     destinationDirectory.set(layout.buildDirectory.dir('xmlast-plsql'))
     targetExtension.set('.xml')
@@ -79,7 +79,7 @@ tasks.named('plsqlXmlAst', name.flowdigger.grammars.plsql.XmlAstPlsqlGradleTask)
 S-expression output variant:
 
 ```groovy
-tasks.named('plsqlXmlAst', name.flowdigger.gradle.antlr.XmlAstPlsqlGradleTask) {
+tasks.named('plsqlXmlAst', org.flowdigger.gradle.antlr.XmlAstPlsqlGradleTask) {
     targetExtension.set('.xir')
     outputFormat.set('beautified')
 }

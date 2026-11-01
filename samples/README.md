@@ -13,7 +13,7 @@ This directory contains Gradle build use-case examples for validating PL/SQL sam
 
 These files are designed as copy/paste templates for a grammar module where:
 
-- parser class: `name.flowdigger.parsers.PlSqlParser`
-- lexer class: `name.flowdigger.parsers.PlSqlLexer`
+- parser class: `org.flowdigger.parsers.PlSqlParser`
+- lexer class: `org.flowdigger.parsers.PlSqlLexer`
 - parser entry rule: `script`
 - sample directory: `src/test/resources/benchmark`
