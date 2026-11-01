@@ -345,6 +345,26 @@ tasks.register('coverage') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 
+tasks.matching { it.name == 'publishPlugins' }.configureEach {
+    notCompatibleWithConfigurationCache('publishPlugins uses Gradle Plugin Publish internals that are not configuration-cache serializable')
+}
+
+tasks.named('compileTestJava') {
+    dependsOn tasks.named('compileAntlrSources')
+    classpath += files("$buildDir/classes/java/antlr")
+}
+
+tasks.named('test') {
+    classpath += files("$buildDir/classes/java/antlr")
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('verifyGrammarSources')
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}
 def configureXmlAstTask = { org.flowdigger.gradle.antlr.XmlAstGradleTask t, String sourcePath, String outputDirName, String taskDescription ->
     t.group = 'verification'
     t.description = taskDescription
