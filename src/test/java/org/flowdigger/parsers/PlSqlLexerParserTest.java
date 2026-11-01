@@ -1,4 +1,4 @@
-package name.jurgenei.parsers;
+package org.flowdigger.parsers;
 
 import org.antlr.v4.runtime.*;
 import org.junit.Assert;
@@ -42,8 +42,8 @@ public class PlSqlLexerParserTest {
 
     private void loadParserClasses() throws Exception {
         try {
-            lexerClass = Class.forName("name.jurgenei.parsers.PlSqlLexer");
-            parserClass = Class.forName("name.jurgenei.parsers.PlSqlParser");
+            lexerClass = Class.forName("org.flowdigger.parsers.PlSqlLexer");
+            parserClass = Class.forName("org.flowdigger.parsers.PlSqlParser");
 
             lexerConstructor = lexerClass.getConstructor(CharStream.class);
             parserConstructor = parserClass.getConstructor(TokenStream.class);

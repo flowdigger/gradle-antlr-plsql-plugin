@@ -1,4 +1,4 @@
-package name.jurgenei.gradle.antlr;
+package org.flowdigger.gradle.antlr;
 
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
@@ -28,8 +28,8 @@ public class XmlAstPlsqlPluginTest {
 
         final XmlAstPlsqlGradleTask task = (XmlAstPlsqlGradleTask) project.getTasks().getByName("plsqlXmlAst");
         Assert.assertEquals("plsql", task.getGrammar().get());
-        Assert.assertEquals("name.jurgenei.parsers.PlSqlParser", task.getParserClassName().get());
-        Assert.assertEquals("name.jurgenei.parsers.PlSqlLexer", task.getLexerClassName().get());
+        Assert.assertEquals("org.flowdigger.parsers.PlSqlParser", task.getParserClassName().get());
+        Assert.assertEquals("org.flowdigger.parsers.PlSqlLexer", task.getLexerClassName().get());
         Assert.assertEquals("script", task.getStartRule().get());
         Assert.assertTrue(task.getIncludes().get().contains("**/*.sql"));
         Assert.assertEquals(".xml", task.getTargetExtension().get());

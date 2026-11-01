@@ -20,7 +20,7 @@ plugins {
 }
 
 group = 'org.flowdigger.gradle'
-version = '0.1.8'
+version = '1.0.0'
 
 ext {
     spotbugsEngineVersion = '4.8.6'
@@ -159,7 +159,7 @@ sonar {
     }
 }
 
-def grammarDir = file('src/main/antlr/name/jurgenei/parsers')
+def grammarDir = file('src/main/antlr/org/flowdigger/parsers')
 def antlrOutputDir = file("generated-src/antlr/main")
 def antlrPackage = 'org.flowdigger.parsers'
 
@@ -245,8 +245,8 @@ tasks.register('verifyJarLayout') {
             def entries = zip.entries().collect { it.name }
 
             def required = [
-                    'name/jurgenei/parsers/PlSqlLexer.g4',
-                    'name/jurgenei/parsers/PlSqlParser.g4'
+                    'org/flowdigger/parsers/PlSqlLexer.g4',
+                    'org/flowdigger/parsers/PlSqlParser.g4'
             ]
 
             required.each { path ->
@@ -256,10 +256,10 @@ tasks.register('verifyJarLayout') {
             }
 
             if (!entries.any { it ==~ /name\/jurgenei\/parsers\/PlSqlLexer(\$.*)?\.class/ }) {
-                throw new GradleException("Missing required lexer class entry under name/jurgenei/parsers in ${jarFile.name}")
+                throw new GradleException("Missing required lexer class entry under org/flowdigger/parsers in ${jarFile.name}")
             }
             if (!entries.any { it ==~ /name\/jurgenei\/parsers\/PlSqlParser(\$.*)?\.class/ }) {
-                throw new GradleException("Missing required parser class entry under name/jurgenei/parsers in ${jarFile.name}")
+                throw new GradleException("Missing required parser class entry under org/flowdigger/parsers in ${jarFile.name}")
             }
         } finally {
             zip.close()
@@ -271,8 +271,8 @@ tasks.register('verifyGrammarSources') {
     group = 'verification'
     description = 'Checks that PL/SQL grammar source files are present in the extracted module.'
     def required = [
-            'src/main/antlr/name/jurgenei/parsers/PlSqlLexer.g4',
-            'src/main/antlr/name/jurgenei/parsers/PlSqlParser.g4'
+            'src/main/antlr/org/flowdigger/parsers/PlSqlLexer.g4',
+            'src/main/antlr/org/flowdigger/parsers/PlSqlParser.g4'
     ]
     def requiredFiles = required.collect { file(it) }
     inputs.files(requiredFiles)

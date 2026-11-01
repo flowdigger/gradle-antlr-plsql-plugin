@@ -24,8 +24,8 @@ tasks.register('verifyGrammarSources') {
     group = 'verification'
     description = 'Checks that PL/SQL grammar source files are present in the root project.'
     def requiredFiles = [
-            rootProject.file('src/main/antlr/name/jurgenei/parsers/PlSqlLexer.g4'),
-            rootProject.file('src/main/antlr/name/jurgenei/parsers/PlSqlParser.g4')
+            rootProject.file('src/main/antlr/org/flowdigger/parsers/PlSqlLexer.g4'),
+            rootProject.file('src/main/antlr/org/flowdigger/parsers/PlSqlParser.g4')
     ]
     inputs.files(requiredFiles)
     doLast {

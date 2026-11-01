@@ -2,7 +2,7 @@
 
 ![Conformance](https://img.shields.io/badge/Conformance-Check--All%20Passing-brightgreen)
 
-[![Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/name.jurgenei.gradle.antlr.plsql?label=Plugin%20Portal)](https://plugins.gradle.org/plugin/name.jurgenei.gradle.antlr.plsql)
+[![Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/org.flowdigger.gradle.antlr.plsql?label=Plugin%20Portal)](https://plugins.gradle.org/plugin/org.flowdigger.gradle.antlr.plsql)
 [![Build and Test](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![JUnit Report](https://img.shields.io/badge/JUnit-Report-blue?logo=githubactions)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![Coverage CI](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml)
@@ -18,7 +18,7 @@
 
 `gradle-antlr-plsql-plugin` provides preconfigured XML AST task support for PL/SQL parsing workflows.
 
-It builds on `name.jurgenei.gradle.antlr` and offers task defaults tailored for `PlSqlLexer`/`PlSqlParser` use cases.
+It builds on `org.flowdigger.gradle.antlr` and offers task defaults tailored for `PlSqlLexer`/`PlSqlParser` use cases.
 
 ## Position in XIR spine
 
@@ -41,7 +41,7 @@ Structured Knowledge -> XIR -> Observation -> Derivation -> Knowledge -> Applica
 
 ```groovy
 plugins {
-    id 'name.jurgenei.gradle.antlr.plsql'
+    id 'org.flowdigger.gradle.antlr.plsql'
 }
 ```
 
@@ -54,8 +54,8 @@ plugins {
 Default task conventions:
 
 - `grammar = plsql`
-- `parserClassName = name.jurgenei.parsers.PlSqlParser`
-- `lexerClassName = name.jurgenei.parsers.PlSqlLexer`
+- `parserClassName = org.flowdigger.parsers.PlSqlParser`
+- `lexerClassName = org.flowdigger.parsers.PlSqlLexer`
 - `startRule = script`
 - `includes = ['**/*.sql', '**/*.pks', '**/*.pkb', '**/*.pls']`
 
@@ -64,10 +64,10 @@ Default task conventions:
 ```groovy
 plugins {
     id 'java'
-    id 'name.jurgenei.gradle.antlr.plsql' 
+    id 'org.flowdigger.gradle.antlr.plsql' 
 }
 
-tasks.named('plsqlXmlAst', name.jurgenei.grammars.plsql.XmlAstPlsqlGradleTask) {
+tasks.named('plsqlXmlAst', org.flowdigger.grammars.plsql.XmlAstPlsqlGradleTask) {
     sourceDirectory.set(layout.projectDirectory.dir('src/test/resources/plsql'))
     destinationDirectory.set(layout.buildDirectory.dir('xmlast-plsql'))
     targetExtension.set('.xml')
@@ -78,7 +78,7 @@ tasks.named('plsqlXmlAst', name.jurgenei.grammars.plsql.XmlAstPlsqlGradleTask) {
 S-expression output variant:
 
 ```groovy
-tasks.named('plsqlXmlAst', name.jurgenei.gradle.antlr.XmlAstPlsqlGradleTask) {
+tasks.named('plsqlXmlAst', org.flowdigger.gradle.antlr.XmlAstPlsqlGradleTask) {
     targetExtension.set('.xir')
     outputFormat.set('beautified')
 }

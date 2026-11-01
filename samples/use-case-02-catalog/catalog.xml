@@ -1,8 +1,8 @@
 <catalog>
   <grammar
       name="plsql"
-      parser="name.jurgenei.parsers.PlSqlParser"
-      lexer="name.jurgenei.parsers.PlSqlLexer"
+      parser="org.flowdigger.parsers.PlSqlParser"
+      lexer="org.flowdigger.parsers.PlSqlLexer"
       start-rule="script"/>
 </catalog>
 
