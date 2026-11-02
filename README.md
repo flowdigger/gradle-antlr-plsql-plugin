@@ -2,16 +2,14 @@
 
 ![Conformance](https://img.shields.io/badge/Conformance-Check--All%20Passing-brightgreen)
 
+[![Build](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![Release](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/release.yml)
-[![Build and Test](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
-[![JUnit Report](https://img.shields.io/badge/JUnit-Report-blue?logo=githubactions)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![Coverage CI](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml)
 [![CodeQL](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/codeql.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/codeql.yml)
 [![Dependency Check](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/dependency-check.yml)
 [![SpotBugs Security](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/spotbugs-security.yml)
-[![Checkstyle](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/checkstyle.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/checkstyle.yml)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/security/dependabot)
-[![Coverage](https://codecov.io/gh/flowdigger/gradle-antlr-plsql-plugin/graph/badge.svg?branch=main)](https://codecov.io/gh/flowdigger/gradle-antlr-plsql-plugin)
+[![Coverage](https://codecov.io/gh/flowdigger/gradle-antlr-plsql-plugin/graph/badge.svg?branch=main)](https://codecov.io/gh/flowdigger/gradle-antlr-plsql-plugin?branch=main)
 [![Maven Central](https://img.shields.io/maven-central/v/org.flowdigger.gradle/gradle-antlr-plsql-plugin.svg)](https://search.maven.org/artifact/org.flowdigger.gradle/gradle-antlr-plsql-plugin)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
@@ -65,7 +63,7 @@ Default task conventions:
 ```groovy
 plugins {
     id 'java'
-    id 'org.flowdigger.gradle.antlr.plsql'
+    id 'org.flowdigger.gradle.antlr.plsql' 
 }
 
 tasks.named('plsqlXmlAst', org.flowdigger.grammars.plsql.XmlAstPlsqlGradleTask) {
@@ -94,6 +92,14 @@ Run:
 ./gradlew plsqlXmlAst
 ```
 
+## Testing and Security Checks
+
+```bash
+./gradlew clean check
+./gradlew coverage
+./gradlew allSecurityChecks
+```
+
 ## Benchmark and Profiling
 
 Run repeatable benchmark/profile matrix with JFR capture:
@@ -106,6 +112,32 @@ Fast-mode profiling default disables per-file line-count reread (`enableLineCoun
 Set `DECISION_PROFILING=true` to emit grammar decision hotspots in report.
 
 Guide and tunables: `PERF_PROFILING.md`
+
+## Release to Maven Central
+
+Set credentials and signing material:
+
+```bash
+export ORG_GRADLE_PROJECT_mavenCentralUsername=...
+export ORG_GRADLE_PROJECT_mavenCentralPassword=...
+export ORG_GRADLE_PROJECT_signingKey=...
+export ORG_GRADLE_PROJECT_signingPassword=...
+export ORG_GRADLE_PROJECT_signingKeyId=...
+```
+
+Build signed Central bundle:
+
+```bash
+./gradlew clean packageCentralBundle
+```
+
+## CI and Code Scans
+
+- `.github/workflows/ci.yml` -> build + tests + SpotBugs + OWASP Dependency-Check
+- `.github/workflows/coverage.yml` -> JaCoCo + Codecov upload
+- `.github/workflows/codeql.yml` -> GitHub CodeQL analysis
+- `.github/workflows/release.yml` -> Maven Central bundle + Central Publisher upload
+- `.github/workflows/test-on-push.yml` -> fast test validation
 
 ## Troubleshooting
 
