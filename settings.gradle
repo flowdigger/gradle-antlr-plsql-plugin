@@ -1,12 +1,18 @@
 pluginManagement {
-    includeBuild("../gradle-antlr-plugin")
+    def antlrPluginBuild = file('../gradle-antlr-plugin')
+    if (antlrPluginBuild.isDirectory()) {
+        includeBuild('../gradle-antlr-plugin')
+    }
     repositories {
         gradlePluginPortal()
         mavenCentral()
     }
 }
 
-includeBuild("../gradle-antlr-plugin")
+def antlrPluginBuild = file('../gradle-antlr-plugin')
+if (antlrPluginBuild.isDirectory()) {
+    includeBuild('../gradle-antlr-plugin')
+}
 
 rootProject.name = 'gradle-antlr-plsql-plugin'
 
