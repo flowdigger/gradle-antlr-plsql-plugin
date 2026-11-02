@@ -15,10 +15,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
+          cache: gradle
 
       - name: Ensure gradle-antlr-plugin is available
         shell: bash
@@ -37,16 +38,15 @@ jobs:
             exit 0
           fi
 
-          if git clone --depth 1 "https://github.com/jurgenei/gradle-antlr-plugin.git" "$ROOT_PARENT/gradle-antlr-plugin"; then
-            echo "Cloned jurgenei/gradle-antlr-plugin"
+          if git clone --depth 1 "https://github.com/flowdigger/gradle-antlr-plugin.git" "$ROOT_PARENT/gradle-antlr-plugin"; then
+            echo "Cloned flowdigger/gradle-antlr-plugin"
             exit 0
           fi
 
           echo "Could not clone required gradle-antlr-plugin"
           exit 1
 
-      - name: Run tests
+      - name: Run checks
         run: |
           chmod +x ./gradlew
-          ./gradlew --no-daemon --stacktrace :test
-
+          ./gradlew --no-daemon --stacktrace clean check spotbugsMain
