@@ -17,10 +17,17 @@ jobs:
 
     steps:
       - name: Checkout
+<<<<<<< HEAD
         uses: actions/checkout@v7
 
       - name: Set up Java 21
         uses: actions/setup-java@v6
+=======
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+>>>>>>> 4630346 (chore: align flowdigger branding, CI, badges, and central release)
         with:
           distribution: temurin
           java-version: '21'
@@ -54,10 +61,17 @@ jobs:
 
     steps:
       - name: Checkout
+<<<<<<< HEAD
         uses: actions/checkout@v7
 
       - name: Set up Java 21
         uses: actions/setup-java@v6
+=======
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+>>>>>>> 4630346 (chore: align flowdigger branding, CI, badges, and central release)
         with:
           distribution: temurin
           java-version: '21'
@@ -128,7 +142,11 @@ jobs:
 
       - name: Upload publish log
         if: ${{ always() }}
+<<<<<<< HEAD
         uses: actions/upload-artifact@v7
+=======
+        uses: actions/upload-artifact@v4
+>>>>>>> 4630346 (chore: align flowdigger branding, CI, badges, and central release)
         with:
           name: publish-log-${{ github.run_id }}
           path: publish.log
@@ -136,7 +154,11 @@ jobs:
 
       - name: Upload Central response
         if: ${{ always() }}
+<<<<<<< HEAD
         uses: actions/upload-artifact@v7
+=======
+        uses: actions/upload-artifact@v4
+>>>>>>> 4630346 (chore: align flowdigger branding, CI, badges, and central release)
         with:
           name: central-response-${{ github.run_id }}
           path: central-upload-response.json
