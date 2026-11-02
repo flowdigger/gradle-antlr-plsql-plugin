@@ -375,7 +375,6 @@ tasks.register('coverage') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 
-<<<<<<< HEAD
 tasks.register('stageCentralBundleRepo', Sync) {
     dependsOn tasks.named('publishMavenJavaPublicationToMavenLocal')
     def artifactBaseDir = file("${System.getProperty('user.home')}/.m2/repository/org/flowdigger/gradle/gradle-antlr-plsql-plugin")
@@ -543,7 +542,7 @@ tasks.register('allSecurityChecks') {
 def sqlInputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application"
 def astOutputDir = "/Users/cs79en/Developer/Projects/lineage/P01744-vortex-oracle-application.output"
 
-tasks.register('realast', name.jurgenei.gradle.antlr.XmlAstGradleTask) { it ->
+tasks.register('realast', org.flowdigger.gradle.antlr.XmlAstGradleTask) { it ->
     configureXmlAstTask(it, sqlInputDir, astOutputDir,
             'Parses benchmark SQL samples parallel.')
     it.executionModel.set('VIRTUAL_THREADS')
