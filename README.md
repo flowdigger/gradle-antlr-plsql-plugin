@@ -2,6 +2,9 @@
 
 ![Conformance](https://img.shields.io/badge/Conformance-Check--All%20Passing-brightgreen)
 
+[![Release](https://img.shields.io/github/v/release/flowdigger/gradle-antlr-plsql-plugin?sort=semver)](https://central.sonatype.com/search?q=g:org.flowdigger.gradle%20AND%20a:gradle-antlr-plsql-plugin)
+[![Maven Central](https://img.shields.io/maven-central/v/org.flowdigger.gradle/gradle-antlr-plsql-plugin?label=Maven%20Central)](https://central.sonatype.com/search?q=g:org.flowdigger.gradle%20AND%20a:gradle-antlr-plsql-plugin)
+
 [![Build and Test](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![JUnit Report](https://img.shields.io/badge/JUnit-Report-blue?logo=githubactions)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![Coverage CI](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml)
