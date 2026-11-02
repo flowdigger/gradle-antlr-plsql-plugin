@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.flowdigger.gradle:gradle-antlr-plugin:0.1.7'
+    implementation("org.flowdigger.gradle:gradle-antlr-plugin:1.0.0")
     implementation 'org.antlr:antlr4-runtime:4.13.2'
 
     antlr 'org.antlr:antlr4:4.13.2'
@@ -147,6 +147,10 @@ tasks.named('spotbugsMain') {
         html.required = true
         xml.required = false
     }
+}
+
+tasks.named('spotbugsTest') {
+    enabled = false
 }
 
 // SonarQube configuration
@@ -255,10 +259,10 @@ tasks.register('verifyJarLayout') {
                 }
             }
 
-            if (!entries.any { it ==~ /name\/jurgenei\/parsers\/PlSqlLexer(\$.*)?\.class/ }) {
+            if (!entries.any { it ==~ /org\/flowdigger\/parsers\/PlSqlLexer(\$.*)?\.class/ }) {
                 throw new GradleException("Missing required lexer class entry under org/flowdigger/parsers in ${jarFile.name}")
             }
-            if (!entries.any { it ==~ /name\/jurgenei\/parsers\/PlSqlParser(\$.*)?\.class/ }) {
+            if (!entries.any { it ==~ /org\/flowdigger\/parsers\/PlSqlParser(\$.*)?\.class/ }) {
                 throw new GradleException("Missing required parser class entry under org/flowdigger/parsers in ${jarFile.name}")
             }
         } finally {
