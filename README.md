@@ -131,6 +131,9 @@ Build signed Central bundle:
 ./gradlew clean packageCentralBundle
 ```
 
+Release workflow (`.github/workflows/release.yml`) uploads bundle to Sonatype Central Publisher API on `v*` tags (or manual dispatch). Configure repository secrets:
+`MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `SIGNING_KEY`, `SIGNING_PASSWORD`, `SIGNING_KEY_ID`.
+
 ## CI and Code Scans
 
 - `.github/workflows/ci.yml` -> build + tests + SpotBugs + OWASP Dependency-Check

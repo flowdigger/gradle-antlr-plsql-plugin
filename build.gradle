@@ -48,6 +48,7 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
     withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
@@ -115,17 +116,41 @@ publishing {
 
     repositories {
         mavenLocal()
+        maven {
+            name = 'sonatype'
+            def releasesRepoUrl = 'https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = uri(version.toString().endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl)
+            credentials {
+                username = providers.gradleProperty('mavenCentralUsername').orNull
+                password = providers.gradleProperty('mavenCentralPassword').orNull
+            }
+        }
     }
 }
 
 signing {
-    required = { gradle.taskGraph.hasTask("publish") }
-    def signingKey = findProperty("signingKey")
-    def signingPassword = findProperty("signingPassword")
+    def signingKey = providers.gradleProperty('signingKey').orNull
+    def signingPassword = providers.gradleProperty('signingPassword').orNull
+    def signingKeyId = providers.gradleProperty('signingKeyId').orNull
+    def validKeyIdPattern = ~/(?i)^[0-9a-f]{8}([0-9a-f]{8})?$/
+    def normalizedSigningKeyId = signingKeyId
+            ?.trim()
+            ?.replaceFirst('^0x', '')
+            ?.replaceFirst('^0X', '')
+            ?.takeIf { it ==~ validKeyIdPattern }
+
     if (signingKey && signingPassword) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign publishing.publications.mavenJava
+        if (normalizedSigningKeyId) {
+            useInMemoryPgpKeys(normalizedSigningKeyId, signingKey, signingPassword)
+        } else {
+            useInMemoryPgpKeys(signingKey, signingPassword)
+        }
+    } else {
+        useGpgCmd()
     }
+
+    sign publishing.publications
 }
 
 // OWASP Dependency-Check configuration
@@ -366,6 +391,7 @@ tasks.register('stageCentralBundleRepo', Sync) {
 
 tasks.register('generateCentralBundleChecksums') {
     dependsOn tasks.named('stageCentralBundleRepo')
+    notCompatibleWithConfigurationCache('Generates checksum files by scanning staged output directory at execution time.')
 
     doLast {
         def stagedVersionDir = layout.buildDirectory
