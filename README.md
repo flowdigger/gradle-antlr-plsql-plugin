@@ -2,9 +2,7 @@
 
 ![Conformance](https://img.shields.io/badge/Conformance-Check--All%20Passing-brightgreen)
 
-[![Release](https://img.shields.io/github/v/release/flowdigger/gradle-antlr-plsql-plugin?sort=semver)](https://central.sonatype.com/search?q=g:org.flowdigger.gradle%20AND%20a:gradle-antlr-plsql-plugin)
-[![Maven Central](https://img.shields.io/maven-central/v/org.flowdigger.gradle/gradle-antlr-plsql-plugin?label=Maven%20Central)](https://central.sonatype.com/search?q=g:org.flowdigger.gradle%20AND%20a:gradle-antlr-plsql-plugin)
-
+[![Release](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/release.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/release.yml)
 [![Build and Test](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![JUnit Report](https://img.shields.io/badge/JUnit-Report-blue?logo=githubactions)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/ci.yml)
 [![Coverage CI](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/coverage.yml)
@@ -14,6 +12,7 @@
 [![Checkstyle](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/checkstyle.yml/badge.svg)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/actions/workflows/checkstyle.yml)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/flowdigger/gradle-antlr-plsql-plugin/security/dependabot)
 [![Coverage](https://codecov.io/gh/flowdigger/gradle-antlr-plsql-plugin/graph/badge.svg?branch=main)](https://codecov.io/gh/flowdigger/gradle-antlr-plsql-plugin)
+[![Maven Central](https://img.shields.io/maven-central/v/org.flowdigger.gradle/gradle-antlr-plsql-plugin.svg)](https://search.maven.org/artifact/org.flowdigger.gradle/gradle-antlr-plsql-plugin)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
 [![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/)
