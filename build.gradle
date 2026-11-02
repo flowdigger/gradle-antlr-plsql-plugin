@@ -375,64 +375,6 @@ tasks.register('coverage') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 
-tasks.register('stageCentralBundleRepo', Sync) {
-    dependsOn tasks.named('publishMavenJavaPublicationToMavenLocal')
-    def artifactBaseDir = file("${System.getProperty('user.home')}/.m2/repository/org/flowdigger/gradle/gradle-antlr-plsql-plugin")
-    def artifactVersionDir = file("${artifactBaseDir}/${project.version}")
-    from(artifactVersionDir)
-    into(layout.buildDirectory.dir("central-staging-repo/org/flowdigger/gradle/gradle-antlr-plsql-plugin/${project.version}"))
-
-    doFirst {
-        if (!artifactVersionDir.exists()) {
-            throw new GradleException("Expected local Maven artifact version directory not found: ${artifactVersionDir}")
-        }
-    }
-}
-
-tasks.register('generateCentralBundleChecksums') {
-    dependsOn tasks.named('stageCentralBundleRepo')
-    notCompatibleWithConfigurationCache('Generates checksum files by scanning staged output directory at execution time.')
-
-    doLast {
-        def stagedVersionDir = layout.buildDirectory
-                .dir("central-staging-repo/org/flowdigger/gradle/gradle-antlr-plsql-plugin/${project.version}")
-                .get()
-                .asFile
-        if (!stagedVersionDir.exists()) {
-            throw new GradleException("Expected staged version directory not found: ${stagedVersionDir}")
-        }
-
-        def checksum = { File file, String algorithm ->
-            MessageDigest digest = MessageDigest.getInstance(algorithm)
-            file.withInputStream { input ->
-                byte[] buffer = new byte[8192]
-                int read
-                while ((read = input.read(buffer)) != -1) {
-                    digest.update(buffer, 0, read)
-                }
-            }
-            digest.digest().collect { String.format('%02x', it & 0xff) }.join('')
-        }
-
-        stagedVersionDir.eachFileRecurse { file ->
-            if (file.isFile() && !file.name.endsWith('.md5') && !file.name.endsWith('.sha1')) {
-                file.parentFile.mkdirs()
-                new File(file.parentFile, "${file.name}.md5").text = "${checksum(file, 'MD5')}\n"
-                new File(file.parentFile, "${file.name}.sha1").text = "${checksum(file, 'SHA-1')}\n"
-            }
-        }
-    }
-}
-
-tasks.register('packageCentralBundle', Zip) {
-    dependsOn tasks.named('generateCentralBundleChecksums')
-    archiveBaseName.set('gradle-antlr-plsql-plugin')
-    archiveVersion.set(project.version.toString())
-    archiveClassifier.set('central-bundle')
-    destinationDirectory.set(layout.buildDirectory.dir('central-bundle'))
-    from(layout.buildDirectory.dir('central-staging-repo'))
-}
-
 tasks.named('compileTestJava') {
     dependsOn tasks.named('compileAntlrSources')
     classpath += files("$buildDir/classes/java/antlr")
