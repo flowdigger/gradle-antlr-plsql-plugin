@@ -174,7 +174,7 @@ sonar {
     }
 }
 
-def grammarDir = file('src/main/antlr/org/flowdigger/parsers')
+def grammarDir = file('src/main/antlr/name/jurgenei/parsers')
 def antlrOutputDir = file("generated-src/antlr/main")
 def antlrPackage = 'org.flowdigger.parsers'
 
