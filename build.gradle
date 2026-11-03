@@ -118,10 +118,13 @@ signing {
 }
 
 // OWASP Dependency-Check configuration
+def dependencyCheckSuppression = file('dependency-check-suppressions.xml')
 dependencyCheck {
     format = 'HTML,JSON,XML'
     failBuildOnCVSS = 7.0
-    suppressionFile = 'dependency-check-suppressions.xml'
+    if (dependencyCheckSuppression.exists()) {
+        suppressionFile = dependencyCheckSuppression.path
+    }
     //enableExperimental = false
 
     // NVD API key configuration (improves scan speed by 30-50%)
