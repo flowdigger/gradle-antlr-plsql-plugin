@@ -12,4 +12,4 @@ jobs:
     uses: flowdigger/github-workflows/.github/workflows/dependency-check.yml@v1
     secrets: inherit
     with:
-      trigger-event: ${{ github.event_name }}
+      trigger-event: ${{ github.event_name == 'pull_request' && 'workflow_dispatch' || github.event_name }}
