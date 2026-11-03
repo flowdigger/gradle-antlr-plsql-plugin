@@ -9,7 +9,7 @@ on:
 
 jobs:
   dependency-check:
-    uses: flowdigger/github-workflows/.github/workflows/dependency-check.yml@v1
+    uses: flowdigger/github-workflows/.github/workflows/dependency-check.yml@8cd0e0e2035f03303ab95fff7bbe633248cea639
     secrets: inherit
     with:
       trigger-event: ${{ github.event_name }}
