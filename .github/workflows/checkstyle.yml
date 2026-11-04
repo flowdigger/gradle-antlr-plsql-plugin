@@ -13,16 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-
       - name: Run Checkstyle if configured
         shell: bash
         run: |
@@ -33,4 +30,3 @@ jobs:
           else
             echo "No Checkstyle task configured; skipping."
           fi
-
