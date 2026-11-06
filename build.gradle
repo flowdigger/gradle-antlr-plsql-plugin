@@ -22,7 +22,7 @@ plugins {
 }
 
 group = 'org.flowdigger.gradle'
-version = '1.0.0'
+version = '1.0.1'
 
 checkstyle {
     toolVersion = '10.26.1'
@@ -129,7 +129,7 @@ signing {
     } else {
         useGpgCmd()
     }
-    sign publishing.publications.mavenJava
+    sign publishing.publications
 }
 
 // OWASP Dependency-Check configuration
@@ -362,30 +362,36 @@ tasks.register('coverage') {
     dependsOn tasks.named('jacocoTestCoverageVerification')
 }
 
-tasks.register('stageCentralBundleRepo', Sync) {
-    dependsOn tasks.named('publishMavenJavaPublicationToMavenLocal')
-    def artifactBaseDir = file("${System.getProperty('user.home')}/.m2/repository/org/flowdigger/gradle/gradle-antlr-plsql-plugin")
-    def artifactVersionDir = file("${artifactBaseDir}/${project.version}")
-    from(artifactVersionDir)
-    into(layout.buildDirectory.dir("central-staging-repo/org/flowdigger/gradle/gradle-antlr-plsql-plugin/${project.version}"))
+def centralStagingRoot = layout.buildDirectory.dir('central-staging-repo')
+def stageCentralBundleRepo = tasks.register('stageCentralBundleRepo', Sync) {
+    dependsOn tasks.named('publishToMavenLocal')
+    into(centralStagingRoot)
+
+    publishing.publications.withType(MavenPublication).all { publication ->
+        def publicationPath = "${publication.groupId.replace('.', '/')}/${publication.artifactId}/${publication.version}"
+        from(file("${System.getProperty('user.home')}/.m2/repository/${publicationPath}")) {
+            into(publicationPath)
+        }
+    }
 
     doFirst {
-        if (!artifactVersionDir.exists()) {
-            throw new GradleException("Expected local Maven artifact version directory not found: ${artifactVersionDir}")
+        publishing.publications.withType(MavenPublication).each { publication ->
+            def publicationPath = "${publication.groupId.replace('.', '/')}/${publication.artifactId}/${publication.version}"
+            def localPublicationDir = file("${System.getProperty('user.home')}/.m2/repository/${publicationPath}")
+            if (!localPublicationDir.exists()) {
+                throw new GradleException("Expected local Maven publication directory not found: ${localPublicationDir}")
+            }
         }
     }
 }
 
-tasks.register('generateCentralBundleChecksums') {
-    dependsOn tasks.named('stageCentralBundleRepo')
+def generateCentralBundleChecksums = tasks.register('generateCentralBundleChecksums') {
+    dependsOn stageCentralBundleRepo
 
     doLast {
-        def stagedVersionDir = layout.buildDirectory
-                .dir("central-staging-repo/org/flowdigger/gradle/gradle-antlr-plsql-plugin/${project.version}")
-                .get()
-                .asFile
-        if (!stagedVersionDir.exists()) {
-            throw new GradleException("Expected staged version directory not found: ${stagedVersionDir}")
+        def stagedRepoDir = centralStagingRoot.get().asFile
+        if (!stagedRepoDir.exists()) {
+            throw new GradleException("Expected staged repository directory not found: ${stagedRepoDir}")
         }
 
         def checksum = { File file, String algorithm ->
@@ -400,7 +406,7 @@ tasks.register('generateCentralBundleChecksums') {
             digest.digest().collect { String.format('%02x', it & 0xff) }.join('')
         }
 
-        stagedVersionDir.eachFileRecurse { file ->
+        stagedRepoDir.eachFileRecurse { file ->
             if (file.isFile() && !file.name.endsWith('.md5') && !file.name.endsWith('.sha1')) {
                 file.parentFile.mkdirs()
                 new File(file.parentFile, "${file.name}.md5").text = "${checksum(file, 'MD5')}\n"
