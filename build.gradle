@@ -23,7 +23,7 @@ plugins {
 }
 
 group = 'org.flowdigger.gradle'
-version = '1.0.1'
+version = '1.0.2'
 
 checkstyle {
     toolVersion = '10.26.1'
@@ -73,47 +73,32 @@ dependencies {
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+    publications.withType(MavenPublication).configureEach {
+        pom {
+            name = 'Gradle ANTLR PL/SQL Plugin'
+            description = 'Gradle plugin for XML AST conversion of PL/SQL sources'
+            url = 'https://github.com/flowdigger/gradle-antlr-plsql-plugin'
 
-            pom {
-                name = 'Gradle ANTLR PL/SQL Plugin'
-                description = 'Gradle plugin for XML AST conversion of PL/SQL sources'
-                url = 'https://github.com/flowdigger/gradle-antlr-plsql-plugin'
-
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://opensource.org/licenses/MIT'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'flowdigger'
-                        name = 'Flowdigger'
-                    }
-                }
-
-                scm {
-                    connection = 'scm:git:https://github.com/flowdigger/gradle-antlr-plsql-plugin.git'
-                    developerConnection = 'scm:git:ssh://git@github.com/flowdigger/gradle-antlr-plsql-plugin.git'
-                    url = 'https://github.com/flowdigger/gradle-antlr-plsql-plugin'
+            licenses {
+                license {
+                    name = 'MIT License'
+                    url = 'https://opensource.org/licenses/MIT'
                 }
             }
+
+            developers {
+                developer {
+                    id = 'flowdigger'
+                    name = 'Flowdigger'
+                }
+            }
+
+            scm {
+                connection = 'scm:git:https://github.com/flowdigger/gradle-antlr-plsql-plugin.git'
+                developerConnection = 'scm:git:ssh://git@github.com/flowdigger/gradle-antlr-plsql-plugin.git'
+                url = 'https://github.com/flowdigger/gradle-antlr-plsql-plugin'
+            }
         }
-    }
-
-    repositories {
-        mavenLocal()
-    }
-}
-
-if (providers.gradleProperty('signingKey').present && providers.gradleProperty('signingPassword').present) {
-    def signPublicationTasks = tasks.matching { it.name.startsWith('sign') && it.name.endsWith('Publication') }
-    tasks.matching { it.name.startsWith('publish') && it.name.endsWith('PublicationToMavenLocal') }.configureEach {
-        dependsOn signPublicationTasks
     }
 }
 
