@@ -23,7 +23,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'org.flowdigger.gradle.antlr.plsql'
+                    id 'org.flowdigger.antlr.plsql'
                 }
                 """);
 
@@ -39,7 +39,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'org.flowdigger.gradle.antlr.plsql'
+                    id 'org.flowdigger.antlr.plsql'
                 }
 
                 tasks.register('printPlsqlDefaults') {
@@ -73,7 +73,7 @@ public class XmlAstPlsqlPluginFunctionalTest {
         writeBuildFile(projectDir, """
                 plugins {
                     id 'java'
-                    id 'org.flowdigger.gradle.antlr.plsql'
+                    id 'org.flowdigger.antlr.plsql'
                 }
 
                 tasks.named('plsqlXmlAst', org.flowdigger.gradle.antlr.XmlAstPlsqlGradleTask) {

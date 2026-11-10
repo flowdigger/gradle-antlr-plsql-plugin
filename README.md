@@ -17,7 +17,7 @@
 
 `gradle-antlr-plsql-plugin` provides preconfigured XML AST task support for PL/SQL parsing workflows.
 
-It builds on `org.flowdigger.gradle.antlr` and offers task defaults tailored for `PlSqlLexer`/`PlSqlParser` use cases.
+It builds on `org.flowdigger.antlr` and offers task defaults tailored for `PlSqlLexer`/`PlSqlParser` use cases.
 
 ## Position in XIR spine
 
@@ -40,7 +40,7 @@ Structured Knowledge -> XIR -> Observation -> Derivation -> Knowledge -> Applica
 
 ```groovy
 plugins {
-    id 'org.flowdigger.gradle.antlr.plsql'
+    id 'org.flowdigger.antlr.plsql'
 }
 ```
 
@@ -63,7 +63,7 @@ Default task conventions:
 ```groovy
 plugins {
     id 'java'
-    id 'org.flowdigger.gradle.antlr.plsql' 
+    id 'org.flowdigger.antlr.plsql' 
 }
 
 tasks.named('plsqlXmlAst', org.flowdigger.grammars.plsql.XmlAstPlsqlGradleTask) {
