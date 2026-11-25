@@ -6498,6 +6498,7 @@ in_elements
     | constant
     | bind_variable
     | general_element
+    | simple_case_expression
     ;
 
 between_elements
@@ -6603,7 +6604,11 @@ TODO scope    {
 // CASE
 
 simple_case_statement
-    : label_declaration? ck1 = CASE expression simple_case_when_part+ case_else_part? END CASE? label_name?
+    : label_declaration? ck1 = CASE expression simple_case_when_part+ case_else_part? END CASE?
+    ;
+
+simple_case_expression
+    : CASE simple_case_when_part+ case_else_part? END CASE?
     ;
 
 simple_case_when_part
